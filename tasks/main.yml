@@ -1,0 +1,45 @@
+
+- name: create project directory
+  file: path={{ prjpath }}
+        state=directory
+
+- name: install epel
+  yum: name=epel-release state=latest
+
+
+- name: install nodejs
+  yum: name={{ item }} state=latest
+  with_items:
+    - nodejs
+    - npm
+
+- name: install npm package
+  command: npm install webpack babel-core babel-loader babel-preset-es2015 mofron chdir={{ prjpath }}
+
+- name: create config directory
+  file: path={{ prjpath }}/conf/webpack
+        state=directory
+
+- name: copy webpack config
+  copy: src=webpack.config.js dest={{ prjpath }}/conf/webpack
+
+- name: create js directory
+  file: path={{ prjpath }}/src/js
+        state=directory
+
+- name: copy js template file
+  copy: src=appdev.js dest={{ prjpath }}/src/js
+
+- name: copy index.html
+  copy: src=index.html dest={{ prjpath }}
+
+- name: create tool directory
+  file: path={{ prjpath }}/tool
+        state=directory
+
+- name: copy build tool
+  copy: src=build.sh dest={{ prjpath }}/tool
+
+- name: copy ignore list
+  copy: src=.gitignore dest={{ prjpath }}
+
