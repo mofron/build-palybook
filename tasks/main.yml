@@ -14,31 +14,19 @@
     - npm
 
 - name: install npm package
-  command: npm install webpack babel-core babel-loader babel-preset-es2015 mofron chdir={{ prjpath }}
+  command: npm install webpack babel-core babel-loader babel-preset-es2015 expose-loader mofron chdir={{ prjpath }}
 
-- name: create config directory
-  file: path={{ prjpath }}/conf/webpack
-        state=directory
+- name: copy config directory
+  copy: src=./files/conf dest={{ prjpath }}
 
-- name: copy webpack config
-  copy: src=webpack.config.js dest={{ prjpath }}/conf/webpack
-
-- name: create js directory
-  file: path={{ prjpath }}/src/js
-        state=directory
-
-- name: copy js template file
-  copy: src=appdev.js dest={{ prjpath }}/src/js
+- name: create src directory
+  copy: src=./files/src dest={{ prjpath }}
 
 - name: copy index.html
   copy: src=index.html dest={{ prjpath }}
 
 - name: create tool directory
-  file: path={{ prjpath }}/tool
-        state=directory
-
-- name: copy build tool
-  copy: src=build.sh dest={{ prjpath }}/tool
+  copy: src=./files/tool dest={{ prjpath }}
 
 - name: copy ignore list
   copy: src=.gitignore dest={{ prjpath }}
